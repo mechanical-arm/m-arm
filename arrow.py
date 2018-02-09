@@ -40,6 +40,12 @@ class Program:
     def update(self):
         # Game loop - Update
         self.surface = self.cam.get_image()
+        print("Button 1", I1.state())
+        print("Button 2", I2.state())
+        print("Button 3", I3.state())
+        self.I1 = I1
+        self.I2 = I2
+        self.I3 = I3
         self.M1 = M1
         self.M2 = M2
         self.M3 = M3
@@ -85,9 +91,9 @@ class Program:
                     self.M1_speed = 0
                 elif event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
                     self.M3_speed = 0
+        M3.setSpeed(self.M3_speed)            
         M1.setSpeed(self.M1_speed)
         M2.setSpeed(self.M2_speed)
-        M3.setSpeed(self.M3_speed)
         if self.PRESS:
             self.M4 = M4.setSpeed(512)
         else:
