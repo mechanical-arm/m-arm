@@ -22,6 +22,7 @@ class Program:
         self.M2_speed = 0
         self.M3_speed = 0
         self.M4_speed = 0
+        self.PRESS = 0
 
     def new(self):
         # start
@@ -50,6 +51,10 @@ class Program:
     def events(self):
         # Game loop - events
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                if self.playing:
+                    self.playing = False
+                self.running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_u:
                     self.M1_speed = 512
@@ -80,9 +85,13 @@ class Program:
                     self.M1_speed = 0
                 elif event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
                     self.M3_speed = 0
-        self.M1 = M1.setSpeed(self.M1_speed)
-        self.M2 = M2.setSpeed(self.M2_speed)
-        self.M3 = M3.setSpeed(self.M3_speed)
+        M1.setSpeed(self.M1_speed)
+        M2.setSpeed(self.M2_speed)
+        M3.setSpeed(self.M3_speed)
+        if self.PRESS:
+            self.M4 = M4.setSpeed(512)
+        else:
+            self.M4 = M4.setSpeed(0)
 
     def draw(self):
         # Game loop - draw
