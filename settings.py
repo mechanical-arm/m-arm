@@ -30,4 +30,4 @@ M2_speed = 0
 M3_speed = 0
 M4_speed = 0
 
-SD = f.ultrasonic(3)
+SD = f.ultrasonic(4)

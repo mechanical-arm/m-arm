@@ -18,6 +18,10 @@ class Program:
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
         self.running = True
+        self.M1_speed = 0
+        self.M2_speed = 0
+        self.M3_speed = 0
+        self.M4_speed = 0
 
     def new(self):
         # start
@@ -48,40 +52,44 @@ class Program:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_u:
-                    self.m1_speed = 512
+                    self.M1_speed = 512
                 if event.key == pygame.K_j:
-                    self.m1_speed = -512
+                    self.M1_speed = -512
                 if event.key == pygame.K_UP:
-                    self.m2_speed = -512
+                    self.M2_speed = -512
                 if event.key == pygame.K_DOWN:
-                    self.m2_speed = 512
+                    self.M2_speed = 512
                 if event.key == pygame.K_RIGHT:
-                    self.m3_speed = -512
+                    self.M3_speed = -512
                 if event.key == pygame.K_LEFT:
-                    self.m3_speed = 512
+                    self.M3_speed = 512
                 if event.key == pygame.K_p:
-                    if PRESS:
+                    if self.PRESS:
                         self.PRESS = False
                     else:
                         self.PRESS = True
                 if event.key == pygame.K_q:
-                    self.f.play_sound(14, 1)
+                    self.f = f.play_sound(0, 1)
                     if self.playing:
                         self.playing = False
                     self.running = False
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
-                    self.m2_speed = 0
+                    self.M2_speed = 0
                 elif event.key == pygame.K_u or event.key == pygame.K_j:
-                    self.m1_speed = 0
+                    self.M1_speed = 0
                 elif event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
-                    self.m3_speed = 0
+                    self.M3_speed = 0
+        self.M1 = M1.setSpeed(self.M1_speed)
+        self.M2 = M2.setSpeed(self.M2_speed)
+        self.M3 = M3.setSpeed(self.M3_speed)
 
     def draw(self):
         # Game loop - draw
-        pygame.draw.line(surface, (RED), (SIZE_LEFT), (SIZE_RIGHT), 5)
-        pygame.draw.line(surface, (RED), (SIZE_BOTTOM), (SIZE_TOP), 5)
-        self.screen.blit(surface, (0, 0))
+        self.surface = self.cam.get_image()
+        pygame.draw.line(self.surface, (RED), (SIZE_LEFT), (SIZE_RIGHT), 5)
+        pygame.draw.line(self.surface, (RED), (SIZE_BOTTOM), (SIZE_TOP), 5)
+        self.screen.blit(self.surface, (0, 0))
         pygame.display.flip()
 
     def show_start_screen(self):
@@ -92,6 +100,6 @@ class Program:
 p = Program()
 p.show_start_screen()
 while p.running:
-    p.new()
+    p.run()
 
 pygame.quit()
