@@ -43,16 +43,15 @@ class Program:
         print("Button 1", I1.state())
         print("Button 2", I2.state())
         print("Button 3", I3.state())
+        print("ultrasonic", I4.state())
         self.I1 = I1
         self.I2 = I2
         self.I3 = I3
+        self.I4 = I4
         self.M1 = M1
         self.M2 = M2
         self.M3 = M3
-        if PRESS:
-            self.M3.setSpeed(512)
-        else:
-            self.M3.setSpeed(0)
+        self.M4 = M4
 
     def events(self):
         # Game loop - events
@@ -91,7 +90,7 @@ class Program:
                     self.M1_speed = 0
                 elif event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
                     self.M3_speed = 0
-        M3.setSpeed(self.M3_speed)            
+        M3.setSpeed(self.M3_speed)
         M1.setSpeed(self.M1_speed)
         M2.setSpeed(self.M2_speed)
         if self.PRESS:

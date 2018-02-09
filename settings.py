@@ -29,6 +29,7 @@ M4 = f.motor(4)
 I1 = f.input(1)
 I2 = f.input(2)
 I3 = f.input(3)
+I4 = f.input(4)
 
 M1_speed = 0
 M2_speed = 0
