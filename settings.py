@@ -4,6 +4,7 @@ TITLE = "Tombola Robot"
 WIDTH = 640
 HEIGHT = 480
 FPS = 60
+SIZE = (WIDTH, HEIGHT)
 
 # Puntator
 SIZE_LEFT = (WIDTH - 20, HEIGHT)
