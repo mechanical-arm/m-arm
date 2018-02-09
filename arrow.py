@@ -12,9 +12,8 @@ class Program:
         # initialize program window, set_caption
         pygame.init()
         pygame.camera.init()
-        self.f = ftrobopy.ftrobopy("192.168.8.2", 65000)
         self.cam = pygame.camera.Camera(pygame.camera.list_cameras()[1], SIZE)
-        cam.start()
+        self.cam.start()
         self.screen = pygame.display.set_mode(SIZE)
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
@@ -35,10 +34,10 @@ class Program:
 
     def update(self):
         # Game loop - Update
-        self.surface = cam.get_image()
-        self.M1.setSpeed(m1_speed)
-        self.M2.setSpeed(m2_speed)
-        self.M3.setSpeed(m3_speed)
+        self.surface = self.cam.get_image()
+        self.M1 = M1
+        self.M2 = M2
+        self.M3 = M3
         if PRESS:
             self.M3.setSpeed(512)
         else:
