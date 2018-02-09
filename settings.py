@@ -1,6 +1,8 @@
 # Settings of arrow.py
 import ftrobopy
 
+import ftrobopy
+
 TITLE = "Tombola Robot"
 WIDTH = 640
 HEIGHT = 480
