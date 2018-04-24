@@ -4,6 +4,7 @@ class Arm:
     MAX_HEIGHT = 20
     MID_HEGIHT = 13
     SPEED = 512
+    STOP = 0
 
     def __init__(self, program, emule=False):
         if emule:
@@ -43,11 +44,12 @@ class Arm:
         # come back
         if self.come_back:
             self.m1.setSpeed(self.SPEED)
-            if self.height > self.MAX_HEIGHT:
-                self.m1.setSpeed(0)
+            if self.height > self.MAX_HEIGHT:   # UP
+                self.m1.setSpeed(STOP)
+            if self.i2.state():                 # BACK
+                self.m2.setSpeed(STOP)
+            if self.i2.state() and self.height >= self.MAX_HEIGHT:
                 self.come_back = False
-            # mid height
-
         # emergency
         if self.i5.state():
             self.program.playing = False
