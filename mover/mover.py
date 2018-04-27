@@ -41,12 +41,9 @@ class Program:
                 elif event.key == pygame.K_q: self.playing = False
                 elif event.key == pygame.K_s: self.arm.come_back = True
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
-                    self.arm.m2.setSpeed(0)
-                elif event.key == pygame.K_u or event.key == pygame.K_j:
-                    self.arm.m1.setSpeed(0)
-                elif event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
-                    self.arm.m3.setSpeed(0)
+                if event.key in [pygame.K_UP, pygame.K_DOWN]: self.arm.m2.setSpeed(0)
+                elif event.key in [pygame.K_u or event.key, pygame.K_j]: self.arm.m1.setSpeed(0)
+                elif event.key in [pygame.K_RIGHT or event.key, pygame.K_LEFT]: self.arm.m3.setSpeed(0)
 
     def update(self):
         self.arm.m4.setSpeed(512*int(self.arm.pressed))
