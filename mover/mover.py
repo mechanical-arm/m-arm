@@ -6,6 +6,7 @@ import time
 import pygame.camera
 from arm import Arm
 from setting import *
+from actions import Test
 
 class Program:
     def __init__(self):
@@ -18,6 +19,7 @@ class Program:
         self.pressed = 0
         self.playing = True
         self.arm = Arm(self)
+        self.tester = Test(self)
         self.run()
 
 
@@ -41,6 +43,7 @@ class Program:
                 elif event.key == pygame.K_q: self.playing = False
                 elif event.key == pygame.K_s: self.arm.goto_back = True
                 elif event.key == pygame.K_d: self.arm.catch = True
+                elif event.key == pygame.K_g: self.tester.positioning.start()
                 elif event.key == pygame.K_f:
                     self.arm.goto_id = True
                     self.arm.last_update = pygame.time.get_ticks()
@@ -53,8 +56,12 @@ class Program:
         self.arm.m4.setSpeed(512*int(self.arm.pressed))
         self.arm.update()
 
+
+
+
+
     def draw(self):
-        print(self.arm)
+        #print(self.arm)
         self.surface = self.cam.get_image()
         #pygame.draw.line(self.surface, (RED), (SIZE_LEFT), (SIZE_RIGHT), 5)
         #pygame.draw.line(self.surface, (RED), (SIZE_BOTTOM), (SIZE_TOP), 5)

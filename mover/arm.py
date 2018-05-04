@@ -31,6 +31,7 @@ class Arm:
         self.goto_back = False
         self.goto_id = False
         self.catch = False
+        self.running = False
         self.last_update = 0
         self.program = program
 
@@ -47,10 +48,13 @@ class Arm:
     goto_id: %d
     goto_back: %d
     last_update: %d
+    ____________
+    running: %s
 """ %(self.height, self.i1.state(), self.i2.state(), self.i3.state(),
-    self.pressed, self.catch, self.goto_id, self.goto_back, self.last_update)
+    self.pressed, self.catch, self.goto_id, self.goto_back, self.last_update, self.running)
 
     def _goto_back(self):
+        self.running = True
         if self.height < self.MAX_HEIGHT:
             self.m1.setSpeed(self.SPEED)
         if not self.i2.state():
@@ -67,9 +71,11 @@ class Arm:
 
         if self.i2.state() and self.height >= self.MAX_HEIGHT and self.i3.state():
             self.goto_back = False
+            self.running = False
 
     def _catch(self):
         if self.height > self.CATCH_HEIGHT:
+            self.running = True
             self.m1.setSpeed(-self.SPEED)
             self.direction = True
 
@@ -79,17 +85,20 @@ class Arm:
             self.m1.setSpeed(self.SPEED)
             self.goto_back = True
             self.catch = False
+            #self.running = False
 
     def _release(self):
         self.pressed = False
 
     def _goto_id(self):
+        self.running = True
         self.m3.setSpeed(-self.SPEED)
         now = pygame.time.get_ticks()
         if now - self.last_update > 5000:
             self.last_update = now
             self.m3.setSpeed(self.STOP)
             self.goto_id = False
+            self.running = False
 
     def update(self):
         self.height = self.i4.distance()
