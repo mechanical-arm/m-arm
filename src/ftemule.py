@@ -26,10 +26,10 @@ class Ultrasonic:
         logging.info("ultrasonic %d connected" %id)
         self.id = id
         self.name = "ultrasonic:"+str(id)
-        self.distance = 40
+        self._distance = 40
 
-    def state():
-        return distance()
+    def distance(self):
+        return self._distance
 
 class ftrobopy:
     def __init__(self,mode,port=65000):
