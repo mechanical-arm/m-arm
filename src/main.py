@@ -25,6 +25,7 @@ class Program:
 
     def quit(self):
         self.arm.running = False
+        self.server.running = True
 
 if __name__ == "__main__":
     p = Program()

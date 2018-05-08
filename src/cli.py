@@ -15,8 +15,13 @@ class Cli(cmd.Cmd):
         print(self.program.arm)
 
     def do_server(self, args):
-        print("Apertura server in corso")
-        self.program.server.run()
+        server = self.program.server
+        if server.running:
+            print("Chiusura server in corso")
+            server.running = False
+        else:
+            print("Apertura server in corso")
+            self.program.t_server.start()
 
 
     def run(self):
