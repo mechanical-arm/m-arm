@@ -1,6 +1,7 @@
 
 class Table:
     def __init__(self, id, text):
+        self.id = id
         self.matrix = self.parse(text)
 
 
@@ -17,9 +18,10 @@ class Table:
         return text[1:-1]
 
     def __str__(self):
-        text = str()
+        text = "ID: %s\n\n" % self.id
         for line in self.matrix:
             for cell in line:
+                if int(cell) == 0: cell = ""
                 text += cell + "\t"
             text += "\n"
         return text
