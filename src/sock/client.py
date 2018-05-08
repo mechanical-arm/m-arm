@@ -4,7 +4,7 @@ from time import sleep
 class Client:
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_adress = ("localhost", 7612)
+        self.server_adress = ("localhost", int(open("port").read()))
         self.running = True
 
     def run(self):
