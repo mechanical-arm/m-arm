@@ -1,4 +1,9 @@
+from threading import Thread
 import cmd
+
+
+from sock.server import Server
+
 
 class Cli(cmd.Cmd):
     def __init__(self, program):
@@ -14,14 +19,19 @@ class Cli(cmd.Cmd):
     def do_state(self, args):
         print(self.program.arm)
 
+    def do_showTable(self, args):
+        print(self.program.table)
+
+    def do_newNumber(self, args):
+        print(self.program.table.new_num(int(args)))
+
     def do_server(self, args):
-        server = self.program.server
-        if server.running:
-            print("\nChiusura server\n")
-            server.running = False
-        else:
-            print("\nApertura server\n")
-            self.program.t_server.start()
+        print("\nApertura server\n")
+        server = Server(self.program)
+        t_server = Thread(target=server.run)
+        t_server.start()
+        print("\nServer aperto\n")
+
 
 
     def run(self):
