@@ -1,4 +1,5 @@
 import pygame
+
 class Arm:
     MIN_HEIGHT = 3
     MAX_HEIGHT = 15

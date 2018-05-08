@@ -7,7 +7,7 @@ class Cli(cmd.Cmd):
         self.prompt = 'BMP > '
 
     def do_quit(self, args):
-        print("\nArresto sistema in corso...")
+        print("\nArresto sistema in corso...\n")
         self.program.quit()
         return 1
 
@@ -17,10 +17,10 @@ class Cli(cmd.Cmd):
     def do_server(self, args):
         server = self.program.server
         if server.running:
-            print("Apertura server")
+            print("\nChiusura server\n")
             server.running = False
         else:
-            print("Chiusura server")
+            print("\nApertura server\n")
             self.program.t_server.start()
 
 

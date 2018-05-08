@@ -14,5 +14,5 @@ class Data:
         tree = et.parse(self.path_xml)
         root = tree.getroot()
         for element in root:
-            if id == element.attrib["id"]:
+            if str(id) == element.attrib["id"]:
                 return Table(int(id), element.text)

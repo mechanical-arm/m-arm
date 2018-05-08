@@ -45,8 +45,6 @@ class Arm:
             self.clock.tick(40)
             self.update()
 
-
-
     def _goto_back(self):
         self.running = True
         if self.height < self.MAX_HEIGHT:
