@@ -16,5 +16,4 @@ class Client:
             sleep(0.4)
 
 c = Client()
-
 c.run()

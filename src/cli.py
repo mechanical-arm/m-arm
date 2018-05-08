@@ -16,7 +16,8 @@ class Cli(cmd.Cmd):
 
     def do_server(self, args):
         print("Apertura server in corso")
-        
+        self.program.server.run()
+
 
     def run(self):
         self.cmdloop()
