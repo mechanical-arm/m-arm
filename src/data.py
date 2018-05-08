@@ -9,7 +9,6 @@ class Data:
         folder_xml = "data"
         path = os.path.dirname(__file__)
         self.path_xml = os.path.join(path, folder_xml, name_xml)
-        print(self.get_table("14"))
 
     def get_table(self, id):
         tree = et.parse(self.path_xml)
@@ -17,5 +16,3 @@ class Data:
         for element in root:
             if id == element.attrib["id"]:
                 return Table(int(id), element.text)
-
-d = Data()
