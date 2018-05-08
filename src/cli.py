@@ -6,11 +6,12 @@ class Cli(cmd.Cmd):
         self.program = program
         self.prompt = 'BMP > '
 
-    def do_quit(self, arg):
+    def do_quit(self, args):
         print("\nArresto sistema in corso...")
+        self.program.quit()
+        return 1
 
     def do_state(self, args):
-        print("__STATE__")
         print(self.program.arm)
 
     def run(self):

@@ -1,4 +1,5 @@
-import pygame
+from pygame.time import Clock
+
 class Arm:
     MIN_HEIGHT = 3
     MAX_HEIGHT = 15
@@ -11,6 +12,7 @@ class Arm:
     def __init__(self, program, emule=False):
         if emule: import ftemule as ftrobopy
         else: import ftrobopy
+        self.program = program
         self.ft = ftrobopy.ftrobopy("192.168.8.2", 65000)
         # motors
         self.m1 = self.ft.motor(1)
@@ -24,6 +26,7 @@ class Arm:
         self.i4 = self.ft.ultrasonic(4)  # ultrasonic
         self.i5 = self.ft.input(5)  # emergency
 
+        # flag
         self.pressed = False
         self.last_update = 0
         self.goto_back = False
@@ -31,25 +34,18 @@ class Arm:
         self.catch = False
         self.running = False
         self.last_update = 0
-        self.program = program
+
+        # loop
+        self.clock = Clock()
+        self.running = True
+
+    def run(self):
+        # loop
+        while self.running:
+            self.clock.tick(40)
+            self.update()
 
 
-    def __str__(self):
-        return """
-    distance: %d
-    i1 state: %d
-    i2 state: %d
-    i3 state: %d
-    ____________
-    pressed: %d
-    catch: %d
-    goto_id: %d
-    goto_back: %d
-    last_update: %d
-    ____________
-    running: %s
-""" %(self.height, self.i1.state(), self.i2.state(), self.i3.state(),
-    self.pressed, self.catch, self.goto_id, self.goto_back, self.last_update, self.running)
 
     def _goto_back(self):
         self.running = True
@@ -116,3 +112,22 @@ class Arm:
             self.m2.setSpeed(0)
             self.m3.setSpeed(0)
             self.m4.setSpeed(0)
+
+
+    def __str__(self):
+        return """
+        distance: %d
+        i1 state: %d
+        i2 state: %d
+        i3 state: %d
+        ____________
+        pressed: %d
+        catch: %d
+        goto_id: %d
+        goto_back: %d
+        last_update: %d
+        ____________
+        running: %s
+        """ %(self.height, self.i1.state(), self.i2.state(), self.i3.state(),
+        self.pressed, self.catch, self.goto_id,self.goto_back, self.last_update,
+        self.running)
