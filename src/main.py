@@ -11,6 +11,7 @@ class Program:
         self.arm = Arm(self, emule=True)
         table = self.data.get_table(10)
         print(table)
+        print(table.new_num(45))
         self.cli = Cli(self)
         self.server = Server(self)
 
@@ -29,4 +30,4 @@ class Program:
 
 if __name__ == "__main__":
     p = Program()
-    p.start()
+    #p.start()

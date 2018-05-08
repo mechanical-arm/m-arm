@@ -4,6 +4,13 @@ class Table:
         self.id = id
         self.matrix = self.parse(text)
 
+    def new_num(self, n):
+        for y,line in enumerate(self.matrix):
+            for x, cell in enumerate(line):
+                if n == cell:
+                    return (x, y)
+
+
     def parse(self, text):
         # remove tab
         try: text = text.translate(None, '\t')
