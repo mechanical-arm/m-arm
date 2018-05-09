@@ -1,4 +1,5 @@
-from pygame.time import Clock
+import pygame.time as time
+import sys
 
 class Arm:
     MIN_HEIGHT = 3
@@ -7,6 +8,9 @@ class Arm:
     CATCH_HEIGHT = 10
     SPEED = 512
     STOP = 0
+
+    FAC_X = 312.5
+    FAC_Y = 307.692308
 
 
     def __init__(self, program, emule=False):
@@ -32,16 +36,19 @@ class Arm:
         self.goto_back = False
         self.goto_id = False
         self.catch = False
+        self.goto_pos = False
+        self.goto_x = False
+        self.goto_y = False
         self.running = False
         self.last_update = 0
 
         # loop
-        self.clock = Clock()
-        self.running = True
+        self.clock = time.Clock()
+        self.playing = True
 
     def run(self):
         # loop
-        while self.running:
+        while self.playing:
             self.clock.tick(40)
             self.update()
 
@@ -85,12 +92,40 @@ class Arm:
     def _goto_id(self):
         self.running = True
         self.m3.setSpeed(-self.SPEED)
-        now = pygame.time.get_ticks()
-        if now - self.last_update > 5000:
+        now = time.get_ticks()
+        if now - self.last_update > 2500:
             self.last_update = now
             self.m3.setSpeed(self.STOP)
             self.goto_id = False
             self.running = False
+
+    def _goto_pos(self, pos):
+        x,y = pos
+        if self.goto_x:
+            self._goto_x(x)
+        if self.goto_y:
+            self._goto_y(y)
+        if not self.goto_x:
+            if not self.goto_y:
+                self.goto_pos = False
+
+
+    def _goto_x(self, x):
+        self.running = True
+        self.m3.setSpeed(-self.SPEED)
+        now = time.get_ticks()
+        if now - self.last_update > x*self.FAC_X:
+            self.m3.setSpeed(self.STOP)
+            self.goto_x = False
+
+    def _goto_y(self, y):
+        self.running = True
+        self.m2.setSpeed(self.SPEED)
+        now = time.get_ticks()
+        if now - self.last_update > y*self.FAC_Y:
+            self.m2.setSpeed(self.STOP)
+            self.goto_y = False
+
 
     def update(self):
         self.height = self.i4.distance()
@@ -102,6 +137,8 @@ class Arm:
             self._catch()
         elif self.goto_id:
             self._goto_id()
+        elif self.goto_pos:
+            self._goto_pos(self.pos)
 
         # emergency
         if self.i5.state():
@@ -110,7 +147,10 @@ class Arm:
             self.m2.setSpeed(0)
             self.m3.setSpeed(0)
             self.m4.setSpeed(0)
+            sys.exit(0)
 
+    def offset_time(self):
+        self.last_update = time.get_ticks()
 
     def __str__(self):
         return """
@@ -123,9 +163,12 @@ class Arm:
         catch: %d
         goto_id: %d
         goto_back: %d
+        goto_pos: %d
+            x: %d
+            y: %d
         last_update: %d
         ____________
         running: %s
         """ %(self.height, self.i1.state(), self.i2.state(), self.i3.state(),
-        self.pressed, self.catch, self.goto_id,self.goto_back, self.last_update,
-        self.running)
+        self.pressed, self.catch, self.goto_id, self.goto_back, self.goto_pos,
+        self.goto_x, self.goto_y, self.last_update, self.running)
