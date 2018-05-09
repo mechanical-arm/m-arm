@@ -2,7 +2,7 @@ import pygame.time as time
 import sys
 
 class Arm:
-    MIN_HEIGHT = 3
+    MIN_HEIGHT = 4
     MAX_HEIGHT = 15
     MID_HEGIHT = 13
     CATCH_HEIGHT = 10
@@ -36,6 +36,7 @@ class Arm:
         self.goto_back = False
         self.goto_id = False
         self.catch = False
+        self.release = False
         self.goto_pos = False
         self.goto_x = False
         self.goto_y = False
@@ -87,7 +88,13 @@ class Arm:
             #self.running = False
 
     def _release(self):
-        self.pressed = False
+        self.running = True
+        self.m1.setSpeed(-self.SPEED)
+        if self.height <= self.MIN_HEIGHT:
+            self.m1.setSpeed(self.STOP)
+            self.pressed = False
+            self.release = False
+            self.running = False
 
     def _goto_id(self):
         self.running = True
@@ -105,8 +112,7 @@ class Arm:
             self._goto_x(x)
         if self.goto_y:
             self._goto_y(y)
-        if not self.goto_x:
-            if not self.goto_y:
+        if not self.goto_x and not self.goto_y:
                 self.goto_pos = False
 
 
@@ -128,6 +134,7 @@ class Arm:
 
 
     def update(self):
+        self.m4.setSpeed(self.SPEED*int(self.pressed))
         self.height = self.i4.distance()
 
         # goto back
@@ -135,6 +142,8 @@ class Arm:
             self._goto_back()
         elif self.catch and self.i2.state() and self.i3.state():
             self._catch()
+        elif self.release:
+            self._release()
         elif self.goto_id:
             self._goto_id()
         elif self.goto_pos:
@@ -161,6 +170,7 @@ class Arm:
         ____________
         pressed: %d
         catch: %d
+        release: %d
         goto_id: %d
         goto_back: %d
         goto_pos: %d
@@ -170,5 +180,5 @@ class Arm:
         ____________
         running: %s
         """ %(self.height, self.i1.state(), self.i2.state(), self.i3.state(),
-        self.pressed, self.catch, self.goto_id, self.goto_back, self.goto_pos,
-        self.goto_x, self.goto_y, self.last_update, self.running)
+        self.pressed, self.catch, self.release, self.goto_id, self.goto_back,
+        self.goto_pos, self.goto_x, self.goto_y, self.last_update, self.running)

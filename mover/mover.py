@@ -61,7 +61,7 @@ class Program:
 
 
     def draw(self):
-        #print(self.arm)
+        print(self.arm)
         self.surface = self.cam.get_image()
         #pygame.draw.line(self.surface, (RED), (SIZE_LEFT), (SIZE_RIGHT), 5)
         #pygame.draw.line(self.surface, (RED), (SIZE_BOTTOM), (SIZE_TOP), 5)

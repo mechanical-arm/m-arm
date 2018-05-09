@@ -37,6 +37,12 @@ class Cli(cmd.Cmd):
     def do_newNumber(self, args):
         print(self.program.table.new_num(int(args)))
 
+    def do_catch(self, args):
+        self.program.arm.catch = True
+
+    def do_release(self, args):
+        self.program.arm.release = True
+
     def do_server(self, args):
         print("\nApertura server\n")
         server = Server(self.program)
