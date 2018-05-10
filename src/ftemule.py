@@ -33,7 +33,7 @@ class Ultrasonic:
 
 class ftrobopy:
     def __init__(self,mode,port=65000):
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.CRITICAL)
         logging.info("connection txt completed")
         self.d = dict()
 
