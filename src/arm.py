@@ -161,6 +161,11 @@ class Arm:
     def offset_time(self):
         self.last_update = time.get_ticks()
 
+    def goto_start(self):
+        self.goto_pos = True
+        self.goto_x = True
+        self.goto_y = True
+
     def __str__(self):
         return """
         distance: %d

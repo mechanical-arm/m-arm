@@ -8,6 +8,7 @@ class Cli(cmd.Cmd):
     def __init__(self, program):
         cmd.Cmd.__init__(self)
         self.program = program
+        self.get_coords = self.program.data.get_coords
         self.prompt = '>>> '
 
     def do_quit(self, args):
@@ -26,13 +27,11 @@ class Cli(cmd.Cmd):
 
     def do_goto(self, args):
         x, y = map(int,args.split())
-        print("goto %d %d " %(x,y))
         arm = self.program.arm
+        arm.pos = self.get_coords(x,y)
+        print("goto %d %d " %(arm.pos))
         arm.offset_time()
-        arm.pos = (x,y)
-        arm.goto_pos = True
-        arm.goto_x = True
-        arm.goto_y = True
+        arm.goto_start()
 
     def do_newNumber(self, args):
         print(self.program.table.new_num(int(args)))
