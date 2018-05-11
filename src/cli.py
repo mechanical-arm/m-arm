@@ -19,10 +19,10 @@ class Cli(cmd.Cmd):
     def do_state(self, args):
         print(self.program.arm)
 
-    def do_showTable(self, args):
+    def do_show_table(self, args):
         print(self.program.table)
 
-    def do_goBack(self, args):
+    def do_go_back(self, args):
         self.program.arm.goto_back = True
 
     def do_goto(self, args):
@@ -33,8 +33,18 @@ class Cli(cmd.Cmd):
         arm.offset_time()
         arm.goto_start()
 
-    def do_newNumber(self, args):
-        print(self.program.table.new_num(int(args)))
+    def do_goto_id(self, args):
+        arm = self.program.arm
+        arm.pos = self.get_coords(4,0)
+        arm.offset_time()
+        arm.goto_start()
+
+
+    def do_row_bool(self,args):
+        print(self.program.table.row_bool(int(args)))
+
+    def do_call_num(self, args):
+        print(self.program.table.call_num(int(args)))
 
     def do_catch(self, args):
         self.program.arm.catch = True

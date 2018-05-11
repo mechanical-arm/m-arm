@@ -34,7 +34,6 @@ class Arm:
         self.pressed = False
         self.last_update = 0
         self.goto_back = False
-        self.goto_id = False
         self.catch = False
         self.release = False
         self.goto_pos = False
@@ -96,16 +95,6 @@ class Arm:
             self.release = False
             self.running = False
 
-    def _goto_id(self):
-        self.running = True
-        self.m3.setSpeed(-self.SPEED)
-        now = time.get_ticks()
-        if now - self.last_update > 2500:
-            self.last_update = now
-            self.m3.setSpeed(self.STOP)
-            self.goto_id = False
-            self.running = False
-
     def _goto_pos(self, pos):
         x,y = pos
         if self.goto_x:
@@ -144,8 +133,6 @@ class Arm:
             self._catch()
         elif self.release:
             self._release()
-        elif self.goto_id:
-            self._goto_id()
         elif self.goto_pos:
             self._goto_pos(self.pos)
 
@@ -176,7 +163,6 @@ class Arm:
         pressed: %d
         catch: %d
         release: %d
-        goto_id: %d
         goto_back: %d
         goto_pos: %d
             x: %d
@@ -185,5 +171,5 @@ class Arm:
         ____________
         running: %s
         """ %(self.height, self.i1.state(), self.i2.state(), self.i3.state(),
-        self.pressed, self.catch, self.release, self.goto_id, self.goto_back,
-        self.goto_pos, self.goto_x, self.goto_y, self.last_update, self.running)
+        self.pressed, self.catch, self.release, self.goto_back, self.goto_pos,
+         self.goto_x, self.goto_y, self.last_update, self.running)

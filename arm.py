@@ -7,10 +7,8 @@ class Arm:
     STOP = 0
 
     def __init__(self, program, emule=False):
-        if emule:
-            import ftemule as ftrobopy
-        else:
-            import ftrobopy
+        if emule: import ftemule as ftrobopy
+        else: import ftrobopy
         self.ft = ftrobopy.ftrobopy("192.168.8.2", 65000)
         # motors
         self.m1 = self.ft.motor(1)

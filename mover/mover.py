@@ -12,7 +12,7 @@ class Program:
     def __init__(self):
         pygame.init()
         pygame.camera.init()
-        self.cam = pygame.camera.Camera(pygame.camera.list_cameras()[1], SIZE)
+        self.cam = pygame.camera.Camera(pygame.camera.list_cameras()[0], SIZE)
         self.cam.start()
         self.screen = pygame.display.set_mode(SIZE)
         self.clock = pygame.time.Clock()

@@ -7,8 +7,8 @@ from cli import Cli
 class Program:
     def __init__(self):
         self.data = Data()
-        self.arm = Arm(self, emule=True)
-        self.table = self.data.get_table(10)
+        self.arm = Arm(self, emule=False)
+        self.table = self.data.get_table(48)
 
         self.cli = Cli(self)
 
