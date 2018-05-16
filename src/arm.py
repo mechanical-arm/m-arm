@@ -10,7 +10,7 @@ class Arm:
     STOP = 0
 
     FAC_X = 312.5
-    FAC_Y = 307.692308
+    FAC_Y = 307.7
 
 
     def __init__(self, program, emule=False):
@@ -152,6 +152,8 @@ class Arm:
         self.goto_pos = True
         self.goto_x = True
         self.goto_y = True
+
+    
 
     def __str__(self):
         return """

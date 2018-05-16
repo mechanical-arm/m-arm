@@ -1,4 +1,5 @@
 from threading import Thread
+from time import sleep
 import cmd
 
 from sock.server import Server
@@ -38,6 +39,19 @@ class Cli(cmd.Cmd):
         arm.pos = self.get_coords(4,0)
         arm.offset_time()
         arm.goto_start()
+
+    def do_get_id(self, arg):
+        ft = self.program.arm.ft
+        ft.startCameraOnline()
+        print(ft.cameraIsOnline())
+        sleep(2.5)
+        frame = ft.getCameraFrame()
+        sleep(1)
+        print(frame, type(frame))
+        f = open("frame.jpg", "wb")
+        f.write(bytearray(frame))
+        f.close()
+        ft.stopCameraOnline()
 
 
     def do_row_bool(self,args):

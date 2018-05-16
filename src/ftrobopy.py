@@ -78,7 +78,7 @@ class ftTXT(object):
   C_DIGITAL                    = 1
   C_OUTPUT                     = 0
   C_MOTOR                      = 1
-  
+
   # command codes for TXT motor shield
   C_MOT_CMD_CONFIG_IO          = 0x51
   C_MOT_CMD_EXCHANGE_DATA      = 0x54
@@ -89,7 +89,7 @@ class ftTXT(object):
   C_MOT_INPUT_ANALOG_VOLTAGE   = 2
   C_MOT_INPUT_ANALOG_5K        = 3
   C_MOT_INPUT_ULTRASONIC       = 4
-  
+
   # sound commands and messages for spi communication to motor shield (only needed in direct mode)
   C_SND_CMD_STATUS             = 0x80
   C_SND_CMD_DATA               = 0x81
@@ -126,7 +126,7 @@ class ftTXT(object):
 
       :param port: Portnummer (normalerweise 65000)
       :type port: integer
-      
+
       :param serport: Serieller Port zur direkten Ansteuerung der Motorplatine des TXT
       :type serport: string
 
@@ -185,7 +185,7 @@ class ftTXT(object):
           self._SoundFilesDir = ('/opt/knobloch/SoundFiles/')
         self._SoundFilesList = os.listdir(self._SoundFilesDir)
         self._SoundFilesList.sort()
-  
+
     else:
       self._sock=socket.socket()
       self._sock.settimeout(5)
@@ -254,14 +254,14 @@ class ftTXT(object):
     self._current_reference_power = 0
     self._current_extension_power = 0
     self._debug                   = []
-    self._exchange_data_lock.release() 
+    self._exchange_data_lock.release()
 
   def isOnline(self):
     return (not self._txt_stop_event.isSet()) and (self._txt_thread is not None)
-  
+
   def cameraIsOnline(self):
     return (not self._camera_stop_event.isSet()) and (self._camera_thread is not None)
-  
+
   def queryStatus(self):
     """
        Abfrage des Geraetenamens und der Firmware Versionsnummer des TXT
@@ -329,7 +329,7 @@ class ftTXT(object):
        >>> print(hex(txt.getVersionNumber()))
     """
     return self._m_version
-    
+
   def getFirmwareVersion(self):
     """
        Liefert die zuvor mit queryStatus() ausgelesene Versionsnummer als
@@ -342,7 +342,7 @@ class ftTXT(object):
        >>> print(txt.getFirmwareVersion())
     """
     return self._m_firmware
-    
+
   def startOnline(self, update_interval=0.02):
     """
        Startet den Onlinebetrieb des TXT und startet einen Python-Thread, der die Verbindung zum TXT aufrecht erhaelt.
@@ -491,7 +491,7 @@ class ftTXT(object):
                                 I[4][0],I[4][1],b'\x00\x00',
                                 I[5][0],I[5][1],b'\x00\x00',
                                 I[6][0],I[6][1],b'\x00\x00',
-                                I[7][0],I[7][1],b'\x00\x00'] 
+                                I[7][0],I[7][1],b'\x00\x00']
     return None
 
   def getConfig(self):
@@ -514,7 +514,7 @@ class ftTXT(object):
     m  = self._ftX1_motor
     i  = self._ftX1_uni
     ii = [(i[0], i[1]), (i[3], i[4]),(i[6], i[7]),(i[9], i[10]),(i[12], i[13]),(i[15], i[16]),(i[18], i[19]),(i[21], i[22]) ]
-    return m, ii 
+    return m, ii
 
   def updateConfig(self):
     """
@@ -665,7 +665,7 @@ class ftTXT(object):
         if frame != None:
           if len(frame) == 0:
             frame = None
-        if count > 20:
+        if count > 200:
           print('Timeout while getting new frame from camera')
           return None
         time.sleep(0.01)
@@ -874,11 +874,11 @@ class ftTXT(object):
 
       :param volume: 0=nicht hoehrbar bis 100=maximale Lautstaerke (Default=100).
       :type idx: integer
-      
+
       Diese Funktion steht nur im 'direct'-Modus zur Verfuegung.
-      
+
       Anwendungsbeispiel:
-    
+
       >>> txt.setSoundVolume(10)   # Lautstaerke auf 10% einstellen
     """
     if self._directmode:
@@ -907,11 +907,11 @@ class ftTXT(object):
 
       :return: 0=nicht hoehrbar bis 100=volle Lautstaerke
       :rtype: integer
-      
+
       Diese Funktion steht nur im 'direct'-Modus zur Verfuegung.
-      
+
       Anwendungsbeispiel:
-    
+
       >>> v=txt.getSoundVolume(50)
       >>> print("Aktuell gesetzte Sound-Lautstaerke=", v)
     """
@@ -1277,19 +1277,19 @@ class ftTXT(object):
     :rtype: int
     """
     return self._port
-  
+
   def getPower(self):
     """
     Liefert die aktuelle Spannung der angeschlossenen Stromversorgung des TXT in mV (Netzteil- oder Batterie-Spannung).
-    
+
     Diese Funktion steht nur im 'direct'-Modus zur Verfuegung.
-    
+
     Anwendungsbeispiel:
-    
+
     >>> Spannung = txt.getPower()
     >>> if Spannung < 7900:
     >>>   print("Warnung: die Batteriespannung des TXT ist schwach. Bitte die Batterie umgehend austauschen !")
-    
+
     """
     if self._directmode:
       return self._current_power
@@ -1300,14 +1300,14 @@ class ftTXT(object):
   def getTemperature(self):
     """
     Liefert die aktuelle Temperatur der CPU des TXT (Einheit: ?) zurueck.
-    
+
     Diese Funktion steht nur im 'direct'-Modus zur Verfuegung.
-    
+
     Anwendungsbeispiel:
-    
+
     >>> Temperatur = txt.getTemperature()
     >>> print("Die Temperatur im innern des TXT betraegt: ", Temperatur, " (Einheit unbekannt)")
-    
+
     """
     if self._directmode:
       return self._current_temperature
@@ -1318,13 +1318,13 @@ class ftTXT(object):
   def getReferencePower(self):
     """
     Liefert die aktuelle Referenz-Spannung in mV.
-    
+
     Diese Funktion steht nur im 'direct'-Modus zur Verfuegung.
-    
+
     Anwendungsbeispiel:
-    
+
     >>> ReferenzSpannung = txt.getReferencePower()
-    
+
     """
     if self._directmode:
       return self._current_reference_power
@@ -1335,13 +1335,13 @@ class ftTXT(object):
   def getExtensionPower(self):
     """
     Liefert die aktuelle Spannung in mV, die am Extension Bus anliegt.
-    
+
     Diese Funktion steht nur im 'direct'-Modus zur Verfuegung.
-    
+
     Anwendungsbeispiel:
-    
+
     >>> ExtensionSpannung = txt.getExtensionPower()
-    
+
     """
     if self._directmode:
       return self._current_extension_power
@@ -1376,16 +1376,16 @@ class ftTXT(object):
   def updateWait(self, minimum_time=0.001):
     """
       Wartet so lange, bis der naechste Datenaustausch-Zyklus mit dem TXT erfolgreich abgeschlossen wurde.
-      
+
       Anwendungsbeispiel:
-      
+
       >>> motor1.setSpeed(512)
       >>> motor1.setDistance(100)
       >>> while not motor1.finished():
       >>>   txt.updateWait()
-      
+
       Ein einfaches "pass" anstelle des "updateWait()" wuerde zu einer deutlich hoeheren CPU-Last fuehren.
-      
+
     """
     self._exchange_data_lock.acquire()
     self._update_status = 0
@@ -1404,7 +1404,7 @@ class ftTXTKeepConnection(threading.Thread):
     self._txt_maxtime    = maxtime
     self._txt_stop_event = stop_event
     return
-  
+
   def run(self):
     while not self._txt_stop_event.is_set():
       try:
@@ -1438,7 +1438,7 @@ class ftTXTKeepConnection(threading.Thread):
 
 class ftTXTexchange(threading.Thread):
   """
-  Thread zum kontinuierlichen Datenaustausch zwischen TXT und einem Computer, bzw. zwischen 
+  Thread zum kontinuierlichen Datenaustausch zwischen TXT und einem Computer, bzw. zwischen
   der TXT Linux Platine und der TXT Motorplatine (im Direktmodus).
   sleep_between_updates ist die Zeit, die zwischen zwei Datenaustauschprozessen gewartet wird.
   Der TXT kann im schnellsten Falle alle 10 ms Daten austauschen.
@@ -1451,7 +1451,7 @@ class ftTXTexchange(threading.Thread):
     self._txt_stop_event            = stop_event
     self._txt_interval_timer        = time.time()
     return
-  
+
   def run(self):
     while not self._txt_stop_event.is_set():
       if self._txt._directmode :
@@ -1497,7 +1497,7 @@ class ftTXTexchange(threading.Thread):
             else:
               # fall back to default case
               direct_mode = ftTXT.C_MOT_INPUT_ANALOG_VOLTAGE
-        
+
             inp[int(k/2)] |= (direct_mode & 0x0F) << (4 * (k%2))
           fields.append(inp[0])
           fields.append(inp[1])
@@ -1529,7 +1529,7 @@ class ftTXTexchange(threading.Thread):
         fields.append(self._txt._cycle_count)
         fields.append(0) # bit pattern of connected txt extension modules, 0 = only master
         #fmtstr += 'BBBB'
-        
+
         # pwm data
         #
         for k in range(8):
@@ -1595,7 +1595,7 @@ class ftTXTexchange(threading.Thread):
         fields.append(0)
         fields.append(0)
         #fmtstr += 'BBBB'
-        
+
         # more filler bytes
         #
         # the length of the transmitted data block (from the txt to the motor shield)
@@ -1610,7 +1610,7 @@ class ftTXTexchange(threading.Thread):
         # it seems that the crc is not used on the motor shield
         fields.append(0)
         #fmtstr += 'H'
-        
+
         buflen    = struct.calcsize(fmtstr)
         fields[1] = buflen
         buf       = struct.pack(fmtstr, *fields)
@@ -1660,7 +1660,7 @@ class ftTXTexchange(threading.Thread):
         #
         # convert received data and write to ftrobopy data structures
         #
-        
+
         # inputs
         #
         m, i = self._txt.getConfig()
@@ -1687,17 +1687,17 @@ class ftTXTexchange(threading.Thread):
               self._txt._current_input[k] = response[14] + 256 * (((response[17] >> 4) & 0x0F) + (response[18] << 4) & 0x30)
             elif k == 7:
               self._txt._current_input[k] = response[15] + 256 * ((response[18]  >> 2) & 0x3F)
-        
+
         # power (of battery and/or main power supply) in volt and internal TXT temperature
         #
         self._txt._current_power       = response[19] + 256 * (response[21] & 0x3F )
         self._txt._current_temperature = response[20] + 256 * ((response[21] >> 6 ) & 0x03)
-        
+
         # reference voltage and extension voltage
         #
         self._txt._current_reference_power = response[22] + 256 * (response[24] & 0x0F)
         self._txt._current_extension_power = response[23] + 256 * ((response[24] >> 4) & 0x0F)
-         
+
         # signals which fast counters did change since last data exchange
         #
         for k in range(4):
@@ -1706,7 +1706,7 @@ class ftTXTexchange(threading.Thread):
           else:
             self._txt._current_counter[k] = 0
         self._txt.debug = response[25]
-            
+
         # current values of fast counters
         #
         self._txt._current_counter_value = response[26:30]
@@ -1714,7 +1714,7 @@ class ftTXTexchange(threading.Thread):
         # - ir data: response[30:33]
         #
         # ir remote 0 (any)
-        
+
         self._txt._ir_current_buttons[0]              =  ( response[30] >> 4) & 0x03
         self._txt._ir_current_dip_switch[0]           =  ( response[30] >> 6) & 0x03
         if response[30] & 0x01:
@@ -1741,7 +1741,7 @@ class ftTXTexchange(threading.Thread):
         self._txt._ir_current_rjoy_up_down[irNr]      = self._txt._ir_current_rjoy_up_down[0]
         self._txt._ir_current_ljoy_left_right[irNr]   = self._txt._ir_current_ljoy_left_right[0]
         self._txt._ir_current_ljoy_up_down[irNr]      = self._txt._ir_current_ljoy_up_down[0]
-        
+
         # current values of motor cmd id and counter reset id
         #
         # packed into 3 bytes
@@ -1764,7 +1764,7 @@ class ftTXTexchange(threading.Thread):
         cM[1] = (b1 >> 7) & 0x01 | (b2 << 1) & 0x06
         cM[2] = (b2 >> 2) & 0x07
         cM[3] = (b2 >> 5) & 0x07
-        
+
         self._txt._update_status = 1
         self._txt._exchange_data_lock.release()
 
@@ -1980,7 +1980,7 @@ class ftrobopy(ftTXT):
     Erweiterung der Klasse ftrobopy.ftTXT. In dieser Klasse werden verschiedene fischertechnik Elemente
     auf einer hoeheren Abstraktionsstufe (aehnlich den Programmelementen aus der ROBOPro Software) fuer den End-User zur Verfuegung gestellt.
     Derzeit sind die folgenden Programmelemente implementiert:
-    
+
     * **motor**, zur Ansteuerung der Motorausgaenge M1-M4
     * **output**, zur Ansteuerung der universellen Ausgaenge O1-O8
     * **input**, zum Einlesen von Werten der Eingaenge I1-I8
@@ -1994,31 +1994,31 @@ class ftrobopy(ftTXT):
     * **joydipswitch**, zur Abfrage der DIP-Schalter-Einstellung einer IR-Fernbedienung
 
     Ausserdem werden die folgenden Sound-Routinen zur Verfuegung gestellt:
-    
+
     * **play_sound**
     * **stop_sound**
     * **sound_finished**
-    
+
   """
   def __init__(self, host='127.0.0.1', port=65000, update_interval=0.01, special_connection='127.0.0.1'):
 
     """
       Initialisierung der ftrobopy Klasse:
-      
+
       * Aufbau der Socket-Verbindung zum TXT Controller mit Hilfe der Basisklasse ftTXT und Abfrage des Geraetenamens und der Firmwareversionsnummer
       * Initialisierung aller Datenfelder der ftTXT Klasse mit Defaultwerten und Setzen aller Ausgaenge des TXT auf 0
       * Starten eines Python-Hintergrundthreads der die Kommunikation mit dem TXT aufrechterhaelt
 
       :param host: Hostname oder IP-Nummer des TXT Moduls
       :type host: string
-      
+
       - 'auto' automatisch den passenden Modus finden.
       - '127.0.0.1' oder 'localhost' automatisch den direct- oder den socket-Modus verwenden, abhaengig davon, ob der Prozess TxtControl Main aktiv ist oder nicht.
       - '192.168.7.2' im USB Offline-Betrieb
       - '192.168.8.2' im WLAN Offline-Betrieb
       - '192.168.9.2' im Bluetooth Offline-Betreib
       - 'direct' im Seriellen Online-Betrieb mit direkter Ansteuerung der Motor-Platine des TXT
-      
+
       :param port: Portnummer (normalerweise 65000)
       :type port: integer
 
@@ -2029,9 +2029,9 @@ class ftrobopy(ftTXT):
       :type special_connection: string
 
       :return: Leer
-      
+
       Anwedungsbeispiel:
-      
+
       >>> import ftrobopy
       >>> ftrob = ftrobopy.ftrobopy('auto')
     """
@@ -2045,7 +2045,7 @@ class ftrobopy(ftTXT):
         ok = False
       s.close()
       return ok
-        
+
     self._txt_is_initialized = False
     if host[:4] == 'auto' or host == '127.0.0.1' or host == 'localhost':
       # first check if running on TXT:
@@ -2084,7 +2084,7 @@ class ftrobopy(ftTXT):
           else:
             print("Error: could not auto detect TXT connection. Please specify host and port manually !")
             return
-          
+
     if host[:6] == 'direct':
       # check if running on FT-txt
       if str.find(socket.gethostname(), 'FT-txt') < 0 and str.find(socket.gethostname(), 'ft-txt') < 0:
@@ -2136,11 +2136,11 @@ class ftrobopy(ftTXT):
       koennen auch Achsumdrehungen genau gemessen werden und damit zurueckgelegte Distanzen bestimmt werden.
       Ausserdem koennen jeweils zwei Motorausgaenge miteinander synchronisiert werden, um z.b. perfekten
       Geradeauslauf bei Robotermodellen zu erreichen.
-      
+
       Anwendungsbeispiel:
-      
+
       >>> Motor1 = ftrob.motor(1)
-      
+
       Das so erzeugte Motor-Objekt hat folgende Funktionen:
 
       * **setSpeed(speed)**
@@ -2150,26 +2150,26 @@ class ftrobopy(ftTXT):
       * **stop()**
 
       Die Funktionen im Detail:
-      
+
       **setSpeed** (speed)
-      
+
       Einstellung der Motorgeschwindigkeit
-      
-      :param speed: 
+
+      :param speed:
       :type speed: integer
-      
+
       :return: Leer
-      
+
       Gibt an, mit welcher Geschwindigkeit der Motor laufen soll:
-      
+
       - der Wertebereich der Geschwindigkeit liegt zwischen 0 (Motor anhalten) und 512 (maximale Geschwindigkeit)
       - Falls die Geschwindigkeit negativ ist, laeuft der Motor Rueckwaerts
-      
+
       Hinweis: Der eingegebene Wert fuer die Geschwindigkeit haengt nicht linear mit der tatsaechlichen
                Drehgeschwindig des Motors zusammen, d.h. die Geschwindigkeit 400 ist nicht doppelt
                so gross, wie die Geschwindigkeit 200.  Bei Hoeheren Werten von speed kann dadurch die
                Geschwindigkeit in feineren Stufen reguliert werden.
-      
+
       Anwendungsbeispiel:
 
       >>> Motor1.setSpeed(512)
@@ -2177,21 +2177,21 @@ class ftrobopy(ftTXT):
       Laesst den Motor mit maximaler Umdrehungsgeschwindigkeit laufen.
 
       **setDistance** (distance, syncto=None)
-      
+
       Einstellung der Motordistanz, die ueber die schnellen Counter gemessen wird, die dafuer natuerlich angeschlossen
       sein muessen.
-      
+
       :param distance: Gibt an, um wieviele Counter-Zaehlungen sich der Motor drehen soll (der Encodermotor gibt 72 Impulse pro Achsumdrehung)
       :type distance: integer
-      
+
       :param syncto: Hiermit koennen zwei Motoren synchronisiert werden um z.B. perfekten Geradeauslauf
                      zu ermoeglichen. Als Parameter wird hier das zu synchronisierende Motorobjekt uebergeben.
       :type syncto: ftrobopy.motor Objekt
-      
+
       :return: Leer
-      
+
       Anwendungsbeispiel:
-      
+
       Der Motor am Anschluss M1 wird mit dem Motor am Anschluss M2 synchronisiert. Die Motoren M1 und M2 laufen
       so lange, bis beide Motoren die eingestellte Distanz (Achsumdrehungen / 72) erreicht haben. Ist einer oder beide Motoren
       nicht mit den schnellen Zaehlereingaengen verbunden, laufen die Motoren bis zur Beendigung des Python-Programmes !
@@ -2202,32 +2202,32 @@ class ftrobopy(ftTXT):
       >>> Motor_rechts.setDistance(100, syncto=Motor_links)
 
       **finished** ()
-      
+
       Abfrage, ob die eingestellte Distanz bereits erreicht wurde.
-      
+
       :return: False: Motor laeuft noch, True: Distanz erreicht
       :rtype: boolean
-      
+
       Anwendungsbeispiel:
 
       >>> while not Motor1.finished():
             print("Motor laeuft noch")
 
       **getCurrentDistance** ()
-      
+
       Abfrage der Distanz, die der Motor seit dem letzten setDistance-Befehl zurueckgelegt hat.
-      
+
       :return: Aktueller Wert des Motor Counters
       :rtype: integer
-            
+
       **stop** ()
-      
+
       Anhalten des Motors durch setzen der Geschwindigkeit auf 0.
-      
+
       :return: Leer
-      
+
       Anwendungsbeispiel:
-      
+
       >>> Motor1.stop()
     """
     class mot(object):
@@ -2282,7 +2282,7 @@ class ftrobopy(ftTXT):
         self.setSpeed(0)
         self.setDistance(0)
         self._outer._exchange_data_lock.release()
-    
+
     M, I = self.getConfig()
     M[output-1] = ftTXT.C_MOTOR
     self.setConfig(M, I)
@@ -2293,23 +2293,23 @@ class ftrobopy(ftTXT):
     """
       Diese Funktion erzeugt ein allgemeines Output-Objekt, das zur Ansteuerung von Elementen verwendet
       wird, die an den Ausgaengen O1-O8 angeschlossen sind.
-      
+
       Anwendungsbeispiel:
-      
+
       Am Ausgang O7 ist eine Lampe oder eine LED angeschlossen:
-      
+
       >>> Lampe = ftrob.output(7)
-      
+
       Das so erzeugte allg. Output-Objekt hat folgende Methoden:
-      
+
       **setLevel** (level)
-      
+
       :param level: Ausgangsleistung, die am Output anliegen soll (genauer fuer die Experten: die Gesamtlaenge des Arbeitsintervalls eines PWM-Taktes in Einheiten von 1/512, d.h. mit level=512 liegt das PWM-Signal waehrend des gesamten Taktes auf high).
       :type level: integer, 1 - 512
-      
+
       Mit dieser Methode kann die Ausgangsleistung eingestellt werden, um z.B. die Helligkeit
       einer Lampe zu regeln.
-      
+
       Anwendungsbeispiel:
 
       >>> Lampe.setLevel(512)
@@ -2324,33 +2324,33 @@ class ftrobopy(ftTXT):
         self._outer._exchange_data_lock.acquire()
         self._outer.setPwm(num-1, self._level)
         self._outer._exchange_data_lock.release()
-    
+
     M, I = self.getConfig()
     M[int((num-1)/2)] = ftTXT.C_OUTPUT
     self.setConfig(M, I)
     self.updateConfig()
-    return out(self, num, level)    
+    return out(self, num, level)
 
   def input(self, num):
     """
       Diese Funktion erzeugt ein digitales (Ein/Aus) Input-Objekt, an einem der Eingaenge I1-I8.  Dies kann z.B. ein Taster, ein Photo-Transistor oder auch ein Reed-Kontakt sein.
-      
+
       Anwendungsbeispiel:
-      
+
       >>> Taster = ftrob.input(5)
-      
+
       Das so erzeugte Taster-Input-Objekt hat folgende Methoden:
-      
+
       **state** ()
-      
+
       Mit dieser Methode wird der Status des digitalen Eingangs abgefragt.
-      
+
       :param num: Nummer des Eingangs, an dem der Taster angeschlossen ist (1 bis 8)
       :type num: integer
-    
+
       :return: Zustand des Eingangs (0: Kontakt geschlossen, d.h. Eingang mit Masse verbunden, 1: Kontakt geoeffnet)
       :rtype: integer
-      
+
       Anwendungsbeispiel:
 
       >>> if Taster.state() == 1:
@@ -2432,25 +2432,25 @@ class ftrobopy(ftTXT):
     """
       Diese Funktion erzeugt ein Objekt zur Abfrage eines an einem der Eingaenge I1-I8 angeschlossenen
       TX/TXT-Ultraschall-Distanzmessers.
-      
+
       Anwendungsbeispiel:
 
       >>> ultraschall = ftrob.ultrasonic(6)
-      
+
       Das so erzeugte Ultraschall-Objekt hat folgende Methoden:
-      
+
       **distance** ()
-      
+
       Mit dieser Methode wird der aktuelle Distanz-Wert abgefragt
-      
+
       :param num: Nummer des Eingangs, an dem der Ultraschall-Distanzmesser angeschlossen ist (1 bis 8)
       :type num: integer
-    
+
       :return: Die aktuelle Distanz zwischen Ultraschallsensor und vorgelagertem Objekt in cm.
       :rtype: integer
 
       Anwendungsbeispiel:
-      
+
       >>> print("Der Abstand zur Wand betraegt ", ultraschall.distance(), " cm.")
     """
     class inp(object):
@@ -2459,35 +2459,35 @@ class ftrobopy(ftTXT):
         self._num=num
       def distance(self):
         return self._outer.getCurrentInput(num-1)
-    
+
     M, I = self.getConfig()
     I[num-1]= (ftTXT.C_ULTRASONIC, ftTXT.C_ANALOG)
     self.setConfig(M, I)
     self.updateConfig()
     return inp(self, num)
-  
+
   def voltage(self, num):
     """
       Diese Funktion erzeugt ein analoges Input-Objekt zur Abfrage des Spannungspegels, der an einem der Eingaenge I1-I8 angeschlossenen ist. Damit kann z.B. auch der Ladezustand des Akkus ueberwacht werden. Der fischertechnik Farbsensor kann auch mit diesem Objekt abgefragt werden.
-      
+
       Anwendungsbeispiel:
-      
+
       >>> batterie = ftrob.voltage(7)
-      
+
       Das so erzeugte Spannungs-Mess-Objekt hat folgende Methoden:
-      
+
       **voltage** ()
-      
+
       Mit dieser Methode wird die anliegende Spannung (in mV) abgefragt. Es koennen Spannungen im Bereich von 5mV bis 10V gemessen werden. Ist die anliegende Spannung groesser als 600mV wird zusaetzlich der digitale Wert fuer diesen Eingang auf 1 gesetzt.
-      
+
       :param num: Nummer des Eingangs, an dem die Spannungsquelle (z.B. Batterie) angeschlossen ist (1 bis 8)
       :type num: integer
-    
+
       :return: Die am Eingang anliegene Spannung (in mV)
       :rtype: integer
-      
+
       Anwendungsbeispiel:
-      
+
       >>> print("Die Spannung betraegt ", batterie.voltage(), " mV")
       """
     class inp(object):
@@ -2496,7 +2496,7 @@ class ftrobopy(ftTXT):
         self._num=num
       def voltage(self):
         return self._outer.getCurrentInput(num-1)
-    
+
     M, I = self.getConfig()
     I[num-1]= (ftTXT.C_VOLTAGE, ftTXT.C_ANALOG)
     self.setConfig(M, I)
@@ -2510,31 +2510,31 @@ class ftrobopy(ftTXT):
       reflektierte Licht einer roten Lichtquelle misst. Der Abstand zwischen Farbsensor und zu
       bestimmender Oberflaeche sollte zwischen 5mm und 10mm liegen.
       Die Farben 'weiss', 'rot' und 'blau' koennen mit dieser Methode zuverlaessig unterschieden werden.
-      
+
       Der zurueckgelieferte Messwert ist die am Fototransistor anliegende Spannung in mV.
       Die colorsensor() Funktion ist im Prinzip identisch zur voltage() Funktion.
-      
+
       Das so erzeugte Farbsensor-Objekt hat folgende Methoden:
 
       **value** ()
-      
+
       Mit dieser Methode wird die anliegende Spannung (in mV) abgefragt.
 
       :param num: Nummer des Eingangs, an dem der Sensor angeschlossen ist (1 bis 8)
       :type num: integer
-      
+
       :return: Der erkannte Farbwert als Integer Zahl
       :rtype: integer
-      
+
       **color** ()
-      
+
       Mit dieser Methode wird die erkannte Farbe als Wort zurueckgeliefert.
 
       :return: Die erkannte Farbe
       :rtype: string
-      
+
       Anwendungsbeispiel:
-      
+
       >>> farbsensor = txt.colorsensor(5)
       >>> print("Der Farbwert ist      : ", farbsensor.value())
       >>> print("Die erkannte Farbe ist: ", farbsensor.color())
@@ -2553,7 +2553,7 @@ class ftrobopy(ftTXT):
           return 'rot'
         else:
           return 'blau'
-    
+
     M, I = self.getConfig()
     I[num-1]= (ftTXT.C_VOLTAGE, ftTXT.C_ANALOG)
     self.setConfig(M, I)
@@ -2566,25 +2566,25 @@ class ftrobopy(ftTXT):
       (Intern ist diese Funktion identisch zur voltage()-Funktion und misst die anliegende Spannung in mV).
       Ab einer Spannung von 600mV wird eine digitale 1 (Spur ist weiss) zurueckgeliefert, ansonsten ist der Wert eine digitale 0 (Spur ist schwarz).
       Falls fuer den Spursensor ein analoger Eingangswert benoetigt wird, kann auch die voltage()-Funktion verwendet werden.
-    
+
       Anwendungsbeispiel:
-    
+
       >>> L = ftrob.trailfollower(7)
-    
+
       Das so erzeugte Sensor-Objekt hat folgende Methoden:
-    
+
       **state** ()
-    
+
       Mit dieser Methode wird der Spursensor abgefragt.
-      
+
       :param num: Nummer des Eingangs, an dem der Sensor angeschlossen ist (1 bis 8)
       :type num: integer
-    
+
       :return: Der Wert des Spursensors (0 oder 1), der am Eingang angeschlossen ist.
       :rtype: integer
-    
+
       Anwendungsbeispiel:
-    
+
       >>> print("Der Wert des Spursensors ist ", L.state())
     """
     class inp(object):
@@ -2599,55 +2599,55 @@ class ftrobopy(ftTXT):
             return 1
           else:
             return 0
-    
+
     M, I = self.getConfig()
     I[num-1]= (ftTXT.C_VOLTAGE, ftTXT.C_DIGITAL)
     self.setConfig(M, I)
     self.updateConfig()
     return inp(self, num)
-  
+
   def joystick(self, joynum, remote_number=0, remote_type=0):
     """
       Diese Funktion erzeugt ein Input-Objekt zur Abfrage eines Joysticks einer fischertechnik IR-Fernbedienung.
 
       :param joynum: Nummer des Joysticks, der abgefragt werden soll.
-       
+
       + 0: linker Joystick
       + 1: rechter Joystick
-      
+
       :param remote_number: (optionaler Parameter) Nummer der IR-Fernbedienung.
-      
+
       Es koennen bis zu 4 fischertechnik IR-Fernbedienungen gleichzeitig abgefragt werden, die ueber ihre DIP-Schalter-Einstellungen voneinander unterschieden werden:
-      
+
       + OFF OFF : Nummer 1
       + ON  OFF : Nummer 2
       + OFF ON  : Nummer 3
       + ON  ON  : Nummer 4
-      
+
       Wird der parameter remote_number=0 gesetzt, kann damit jede der 4 moeglichen Fernbedienungen abgefragt werden, unabhaengig von ihren DIP-Schalter Einstellungen. Dies ist die Standardeinstellung, falls der Parameter nicht angegeben wird.
-      
+
       Anwendungsbeispiel:
-    
+
       >>> joystickLinks   = ftrob.joystick(0)
       >>> joystickRechts  = ftrob.joystick(1)
       >>> joystickNummer3 = ftrob.joystick(0, 2) # linker Joystick, der Fernbedienung Nummer 2 (Dip-Switch: ON OFF)
-    
+
       Das so erzeugte Joystick-Objekt hat folgende Methoden:
-    
+
       **leftright** ()
-    
+
       Mit dieser Methode wird die horizontale (links-rechts) Achse abgefragt.
 
       :return: -15 (Joystick ganz nach links) bis +15 (Joystick ganz nach recht), 0: Mittelstellung
 
       **updown** ()
-      
+
       Mit dieser Methode wird die vertikale (hoch-runter) Achse abgefragt.
-      
+
       :return: -15 (Joystick ganz nach unten) bis +15 (Joystick ganz nach oben), 0: Mittelstellung
-      
+
       Anwendungsbeispiel:
-      
+
       >>> joystick1 = ftrob.joystick(0) # linker Joystick einer bel. IR-Fernsteuerung
       >>> print("Links-Rechts-Stellung=", joystick1.leftright(), " Hoch-Runter-Stellung=", joystick1.updown())
     """
@@ -2682,38 +2682,38 @@ class ftrobopy(ftTXT):
       Diese Funktion erzeugt ein Input-Objekt zur Abfrage eines Buttons einer fischertechnik IR-Fernbedienung.
 
       :param buttonnum: Nummer des Buttons, der abgefragt werden soll.
-       
+
       + 0: linker Button (ON)
       + 1: rechter Button (OFF)
-      
+
       :param remote_number: (optionaler Parameter) Nummer der IR-Fernbedienung.
-      
+
       Es koennen bis zu 4 fischertechnik IR-Fernbedienungen gleichzeitig abgefragt werden, die ueber ihre DIP-Schalter-Einstellungen voneinander unterschieden werden:
-      
+
       + OFF OFF  : Nummer 1
       + ON  OFF  : Nummer 2
       + OFF ON   : Nummer 3
       + ON  ON   : Nummer 4
-      
+
       Wird der parameter remote_number=0 gesetzt, kann damit jede der 4 moeglichen Fernbedienungen abgefragt werden, unabhaengig von ihren DIP-Schalter Einstellungen. Dies ist die Standardeinstellung, falls der Parameter nicht angegeben wird.
-      
+
       Anwendungsbeispiel:
-    
+
       >>> buttonON    = ftrob.joybutton(0)
       >>> buttonOFF   = ftrob.joybutton(1)
       >>> buttonOFF_2 = ftrob.joybutton(0, 4) # linker (ON)-Button, der Fernbedienung Nummer 4 (Dip-Switch: ON ON)
-    
+
       Das so erzeugte Button-Objekt hat die folgende Methode:
-    
+
       **pressed** ()
-    
+
       Mit dieser Methode wird abgefragt, ob der Button gedrueckt ist.
 
       :return: False (=Button ist nicht gedrueckt) oder True (=Button ist gedrueckt)
       :rtype: boolean
 
       Anwendungsbeispiel:
-      
+
       >>> button1 = ftrob.joybutton(0) # linker (ON) Button einer bel. IR-Fernsteuerung
       >>> while not button1.pressed():
       >>>   time.sleep(0.1)
@@ -2748,15 +2748,15 @@ class ftrobopy(ftTXT):
       Diese Funktion erzeugt ein Input-Objekt zur Abfrage des DIP-Schalters einer fischertechnik IR-Fernbedienung.
 
       Anwendungsbeispiel:
-    
+
       >>> IR_DipSchalter = ftrob.joydipswitch()
-    
+
       Das so erzeugte Button-Objekt hat die folgende Methode:
-    
+
       **setting** ()
-    
+
       Mit dieser Methode wird die DIP-Schalter-Einstellung abgefragt:
-      
+
       + OFF OFF  = 0
       + ON  OFF  = 1
       + OFF ON   = 2
@@ -2764,9 +2764,9 @@ class ftrobopy(ftTXT):
 
       :return: Wert des DIP-Schalters (0-3)
       :rtype: integer
-      
+
       Anwendungsbeispiel:
- 
+
       >>> IR_DipSchalter = ftrob.joydipswitch()
       >>> print("Die aktuelle Einstellung des DIP-Schalters ist: ", IR_DipSchalter.setting())
     """
@@ -2785,12 +2785,12 @@ class ftrobopy(ftTXT):
   def sound_finished(self):
     """
       Ueberpruefen, ob der zuletzt gespielte Sounds bereits abgelaufen ist
-      
+
       :return: True (Sound ist fertig) oder False (Sound wird noch abgespielt)
       :rtype: boolean
 
       Anwendungsbeispiel:
-      
+
       >>> while not ftrob.sound_finished():
             pass
     """
@@ -2802,7 +2802,7 @@ class ftrobopy(ftTXT):
   def play_sound(self, idx, repeat=1, volume=100):
     """
       Einen Sound ein- oder mehrmals abspielen.
-      
+
       *  0 : Kein Sound (=Soundausgabe stoppen)
       *  1 : Flugzeug
       *  2 : Alarm
@@ -2833,24 +2833,24 @@ class ftrobopy(ftTXT):
       * 27 : Fahrgeraeusch
       * 28 : Kopf heben
       * 29 : Kopf neigen
-      
+
       :param idx: Nummer des Sounds
       :type idx: integer
-      
+
       :param repeat: Anzahl der Wiederholungen (default=1)
       :type repeat: integer
-      
+
       :param volume: Lautstaerke, mit der der Sound abgespielt wird (0=nicht hoehrbar, 100=maximale Lautstaerke, default=100). Die Lautstaerke kann nur im 'direct'-Modus veraendert werden.
       :type volume: integer
-      
+
       :return: Leer
-      
+
       Anwendungsbeispiel:
-      
+
       >>> ftrob.play_sound(27, 5) # 5 mal hintereinander das Fahrgeraeusch abspielen
       >>> ftrob.play_sound(5, repeat=2, volume=10) # 2 mal hintereinander leise hupen
     """
-    
+
     if idx != self.getSoundIndex():
       self.setSoundIndex(idx)
     if volume != self.getSoundVolume and self._directmode:
@@ -2864,12 +2864,11 @@ class ftrobopy(ftTXT):
       und der Wert fuer die Anzahl der Wiederholungen auf 1 gesetzt.
 
       :return: Leer
-      
+
       Anwendungsbeispiel:
-      
+
       >>> ftrob.stop_sound()
     """
     self.setSoundIndex(0)
     self.setSoundRepeat(1)
     self.incrSoundCmdId()
-
