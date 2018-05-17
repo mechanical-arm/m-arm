@@ -36,6 +36,17 @@ class ftrobopy:
         logging.basicConfig(level=logging.CRITICAL)
         logging.info("connection txt completed")
         self.d = dict()
+        self._camera = False
+
+    def cameraIsOnline(self):
+        return self._camera
+
+    def startCameraOnline(self):
+        self._camera = True
+
+    def getCameraFrame(self):
+        return "frame, emulated"
+
 
     def motor(self, id):
         m = Motor(id)
