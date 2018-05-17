@@ -4,7 +4,6 @@ import cmd
 
 from sock.server import Server
 
-
 class Cli(cmd.Cmd):
     def __init__(self, program):
         cmd.Cmd.__init__(self)
@@ -17,24 +16,32 @@ class Cli(cmd.Cmd):
         self.program.quit()
         return 1
 
+    def help_quit(self): print ("Close program")
+
     def do_state(self, args):
         print(self.program.arm)
+    def help_state(self): print ("Show state of buttons and motors of arm")
 
-    def do_show_table(self, args):
+    def do_show(self, args):
         print(self.program.table)
+    def help_show(self): print ("Show the table of the game")
 
     def do_go_back(self, args):
         self.program.arm.goto_back = True
+    def help_go_back(self): print ("Move arm in 0 point")
 
-    def do_goto(self, args):
+    def do_go(self, args):
         x, y = map(int,args.split())
-        arm = self.program.arm
-        arm.pos = self.get_coords(x,y)
-        print("goto %d %d " %(arm.pos))
-        arm.offset_time()
-        arm.goto_start()
+        if 0<=x<=8 and 0<=y<=2:
+            arm = self.program.arm
+            arm.pos = self.get_coords(x,y)
+            print("goto %d %d " %(arm.pos))
+            arm.offset_time()
+            arm.goto_start()
+        else:
+            print("%d %d -> out of matrix" %(x,y))
 
-    def do_goto_id(self, args):
+    def do_go_id(self, args):
         arm = self.program.arm
         arm.pos = self.get_coords(4,0)
         arm.offset_time()
@@ -52,7 +59,6 @@ class Cli(cmd.Cmd):
         f.write(bytearray(frame))
         f.close()
         ft.stopCameraOnline()
-
 
     def do_row_bool(self,args):
         print(self.program.table.row_bool(int(args)))
