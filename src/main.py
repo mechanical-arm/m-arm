@@ -7,7 +7,7 @@ from cli import Cli
 class Program:
     def __init__(self, arg):
         # argparse
-        if arg[1] == "emule": emule = True
+        if arg[-1] == "emule": emule = True
         else: emule = False
 
         self.data = Data()
