@@ -1,6 +1,8 @@
 from threading import Thread
 from time import sleep
 import cmd
+import pytesseract
+from PIL import Image
 
 from sock.server import Server
 
@@ -49,16 +51,30 @@ class Cli(cmd.Cmd):
 
     def do_get_id(self, arg):
         ft = self.program.arm.ft
-        ft.startCameraOnline()
-        print(ft.cameraIsOnline())
-        sleep(2.5)
-        frame = ft.getCameraFrame()
-        sleep(1)
-        print(frame, type(frame))
-        f = open("frame.jpg", "wb")
-        f.write(bytearray(frame))
-        f.close()
-        ft.stopCameraOnline()
+        image_final = None
+        while image_final is None:
+            try:
+                ft.startCameraOnline()
+                print(ft.cameraIsOnline())
+                sleep(2.5)
+                frame = ft.getCameraFrame()
+                sleep(1)
+                print(frame, type(frame))
+                with open("frame.jpg", "wb") as photo:
+                    photo.write(bytearray(frame))
+                sleep(1)
+                pphoto = Image.open("frame.jpg")
+                image_final = pytesseract.image_to_string(pphoto, config='outputbase digits')
+                ft.stopCameraOnline()
+                print("Camera offline")
+                print(image_final)
+            except Exception as e:
+                print(e)
+                print("azione fallita")
+                image_final = None
+                ft.stopCameraOnline()
+                sleep(1)
+
 
     def do_row_bool(self,args):
         print(self.program.table.row_bool(int(args)))
