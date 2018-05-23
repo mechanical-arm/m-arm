@@ -103,6 +103,7 @@ class Arm:
             self._goto_y(y)
         if not self.goto_x and not self.goto_y:
                 self.goto_pos = False
+                self.running = False
 
 
     def _goto_x(self, x):
@@ -153,7 +154,7 @@ class Arm:
         self.goto_x = True
         self.goto_y = True
 
-    
+
 
     def __str__(self):
         return """

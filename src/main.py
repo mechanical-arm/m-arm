@@ -12,7 +12,6 @@ class Program:
 
         self.data = Data()
         self.arm = Arm(self, emule)
-        self.table = self.data.get_table(48)
 
         self.cli = Cli(self)
 

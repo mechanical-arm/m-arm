@@ -14,9 +14,11 @@ class Cli(cmd.Cmd):
         self.prompt = '>>> '
 
     def do_quit(self, args):
+        ft = self.program.arm.ft
+        ft.stopOnline()
         print("\nArresto sistema in corso...\n")
-        self.program.quit()
-        return 1
+        self.program.arm.playing = False
+        return True
 
     def help_quit(self): print ("Close program")
 
@@ -50,6 +52,17 @@ class Cli(cmd.Cmd):
         arm.goto_start()
 
     def do_get_id(self, arg):
+        arm = self.program.arm
+        arm.pos = self.get_coords(4,0)
+        arm.offset_time()
+        arm.goto_start()
+        sleep(0.1)
+        while arm.running:
+            sleep(0.1)
+        arm.release = True
+        sleep(0.1)
+        while arm.running:
+            sleep(0.1)
         ft = self.program.arm.ft
         image_final = None
         while image_final is None:
@@ -68,19 +81,41 @@ class Cli(cmd.Cmd):
                 ft.stopCameraOnline()
                 print("Camera offline")
                 print(image_final)
+                self.program.table = self.program.data.get_table(int(image_final))
             except Exception as e:
                 print(e)
                 print("azione fallita")
                 image_final = None
                 ft.stopCameraOnline()
                 sleep(1)
+        sleep(0.1)
+        while arm.running:
+            sleep(0.1)
+        arm.goto_back = True
 
 
     def do_row_bool(self,args):
         print(self.program.table.row_bool(int(args)))
 
     def do_call_num(self, args):
-        print(self.program.table.call_num(int(args)))
+        pos = self.program.table.call_num(int(args))
+        if pos:
+            self.do_catch('')
+            arm = self.program.arm
+            sleep(0.1)
+            while arm.running:
+                sleep(0.1)
+            arm.pos = self.get_coords(*pos)
+            arm.offset_time()
+            arm.goto_start()
+            sleep(0.1)
+            while arm.running:
+                sleep(0.1)
+            arm.release = True
+            sleep(0.1)
+            while arm.running:
+                sleep(0.1)
+            arm.goto_back = True
 
     def do_catch(self, args):
         self.program.arm.catch = True
@@ -94,6 +129,8 @@ class Cli(cmd.Cmd):
         t_server = Thread(target=server.run)
         t_server.start()
         print("\nServer aperto\n")
+
+
 
 
 
