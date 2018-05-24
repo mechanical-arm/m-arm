@@ -13,6 +13,13 @@ class Cli(cmd.Cmd):
         self.get_coords = self.program.data.get_coords
         self.prompt = '>>> '
 
+    def do_wait_arm(self, arg=""):
+        arm = self.program.arm
+        sleep(0.1)
+        while arm.running:
+            sleep(0.1)
+        
+        
     def do_quit(self, args):
         ft = self.program.arm.ft
         ft.stopOnline()
@@ -56,41 +63,31 @@ class Cli(cmd.Cmd):
         arm.pos = self.get_coords(4,0)
         arm.offset_time()
         arm.goto_start()
-        sleep(0.1)
-        while arm.running:
-            sleep(0.1)
+        self.do_wait_arm()
         arm.release = True
-        sleep(0.1)
-        while arm.running:
-            sleep(0.1)
+        self.do_wait_arm()
         ft = self.program.arm.ft
         image_final = None
         while image_final is None:
             try:
                 ft.startCameraOnline()
-                print(ft.cameraIsOnline())
                 sleep(2.5)
                 frame = ft.getCameraFrame()
                 sleep(1)
-                print(frame, type(frame))
                 with open("frame.jpg", "wb") as photo:
                     photo.write(bytearray(frame))
                 sleep(1)
                 pphoto = Image.open("frame.jpg")
                 image_final = pytesseract.image_to_string(pphoto, config='outputbase digits')
                 ft.stopCameraOnline()
-                print("Camera offline")
                 print(image_final)
                 self.program.table = self.program.data.get_table(int(image_final))
             except Exception as e:
-                print(e)
                 print("azione fallita")
                 image_final = None
                 ft.stopCameraOnline()
                 sleep(1)
-        sleep(0.1)
-        while arm.running:
-            sleep(0.1)
+        self.do_wait_arm()
         arm.goto_back = True
 
 
@@ -102,19 +99,13 @@ class Cli(cmd.Cmd):
         if pos:
             self.do_catch('')
             arm = self.program.arm
-            sleep(0.1)
-            while arm.running:
-                sleep(0.1)
+            self.do_wait_arm()
             arm.pos = self.get_coords(*pos)
             arm.offset_time()
             arm.goto_start()
-            sleep(0.1)
-            while arm.running:
-                sleep(0.1)
+            self.do_wait_arm()
             arm.release = True
-            sleep(0.1)
-            while arm.running:
-                sleep(0.1)
+            self.do_wait_arm()
             arm.goto_back = True
 
     def do_catch(self, args):
