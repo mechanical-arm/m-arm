@@ -3,6 +3,7 @@ class Table:
     def __init__(self, id, text):
         self.id = id
         self.matrix = self.parse(text)
+        self.last_prize = 1
 
     def parse(self, text):
         # remove tab
@@ -25,6 +26,15 @@ class Table:
         for y,(line,l) in enumerate(self.matrix):
             for x,(cell,b) in enumerate (line):
                 if num == cell: line[x][1] = True
+
+    def add_prize(self):
+        self.last_prize += 1
+
+    def get_prize(self, n_row):
+        prize = self.raw_bool(n_row)
+        if prize > self.last_prize:
+            return prize
+
 
     def row_bool(self, n_row):
         row,state = self.matrix[n_row]

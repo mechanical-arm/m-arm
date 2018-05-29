@@ -12,10 +12,10 @@ class Program:
 
         self.data = Data()
         self.arm = Arm(self, emule)
+        self.cli = Cli(self)
 
         self.table = self.data.get_table(1)
-
-        self.cli = Cli(self)
+        self.emule = emule
 
         # Thread
         self.t_cli = Thread(target=self.cli.run)

@@ -12,12 +12,7 @@ class Cli(cmd.Cmd):
         self.program = program
         self.get_coords = self.program.data.get_coords
         self.prompt = '>>> '
-
-    def do_wait_arm(self, arg=""):
-        arm = self.program.arm
-        sleep(0.1)
-        while arm.running:
-            sleep(0.1)
+        self.run = self.cmdloop
 
 
     def do_quit(self, args):
@@ -26,8 +21,15 @@ class Cli(cmd.Cmd):
         print("\nArresto sistema in corso...\n")
         self.program.arm.playing = False
         return True
-
     def help_quit(self): print ("Close program")
+
+    # ARM
+    def do_wait_arm(self, arg=""):
+        arm = self.program.arm
+        sleep(0.1)
+        while arm.running:
+            sleep(0.1)
+    def help_wait_arm(self): print("wait until arm stop moving")
 
     def do_state(self, args):
         print(self.program.arm)
@@ -46,17 +48,11 @@ class Cli(cmd.Cmd):
         if 0<=x<=8 and 0<=y<=2:
             arm = self.program.arm
             arm.pos = self.get_coords(x,y)
-            print("goto %d %d " %(arm.pos))
             arm.offset_time()
             arm.goto_start()
         else:
             print("%d %d -> out of matrix" %(x,y))
-
-    def do_go_id(self, args):
-        arm = self.program.arm
-        arm.pos = self.get_coords(4,0)
-        arm.offset_time()
-        arm.goto_start()
+    def help_go(self): print("Move arm on coords of the table")
 
     def do_get_id(self, arg):
         arm = self.program.arm
@@ -89,13 +85,11 @@ class Cli(cmd.Cmd):
                 sleep(1)
         self.do_wait_arm()
         arm.goto_back = True
-
-    def do_row_bool(self,args):
-        print(self.program.table.row_bool(int(args)))
+    def help_get_id(self): print("move arm on ID of table and read it")
 
     def do_call_num(self, args):
         pos = self.program.table.call_num(int(args))
-        if pos:
+        if pos and self.program.emule:
             self.do_catch('')
             arm = self.program.arm
             self.do_wait_arm()
@@ -106,12 +100,15 @@ class Cli(cmd.Cmd):
             arm.release = True
             self.do_wait_arm()
             arm.goto_back = True
+    def help_call_num(self): print("")
 
     def do_catch(self, args):
         self.program.arm.catch = True
-
     def do_release(self, args):
         self.program.arm.release = True
+
+    # TABLE
+
 
     def do_server(self, args):
         print("\nApertura server\n")
@@ -119,10 +116,3 @@ class Cli(cmd.Cmd):
         t_server = Thread(target=server.run)
         t_server.start()
         print("\nServer aperto\n")
-
-
-
-
-
-    def run(self):
-        self.cmdloop()
