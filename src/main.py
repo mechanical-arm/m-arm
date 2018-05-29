@@ -13,6 +13,8 @@ class Program:
         self.data = Data()
         self.arm = Arm(self, emule)
 
+        self.table = self.data.get_table(1)
+
         self.cli = Cli(self)
 
         # Thread
