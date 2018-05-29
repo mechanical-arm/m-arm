@@ -24,13 +24,11 @@ class Table:
     def call_num(self, num):
         for y,(line,l) in enumerate(self.matrix):
             for x,(cell,b) in enumerate (line):
-                if num == cell:
-                    line[x][1] = True
-                    return (x,y)
-
+                if num == cell: line[x][1] = True
 
     def row_bool(self, n_row):
-        row = self.matrix[n_row][0]
+        row,state = self.matrix[n_row]
+        if state: return False
         bool_sum = 0
         for num,bool in row:
             bool_sum += int(bool)

@@ -18,8 +18,8 @@ class Cli(cmd.Cmd):
         sleep(0.1)
         while arm.running:
             sleep(0.1)
-        
-        
+
+
     def do_quit(self, args):
         ft = self.program.arm.ft
         ft.stopOnline()
@@ -89,7 +89,6 @@ class Cli(cmd.Cmd):
                 sleep(1)
         self.do_wait_arm()
         arm.goto_back = True
-
 
     def do_row_bool(self,args):
         print(self.program.table.row_bool(int(args)))
