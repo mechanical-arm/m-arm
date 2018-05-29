@@ -25,19 +25,32 @@ class Table:
     def call_num(self, num):
         for y,(line,l) in enumerate(self.matrix):
             for x,(cell,b) in enumerate (line):
-                if num == cell: line[x][1] = True
+                if num == cell:
+                    line[x][1] = True; break
+        return (x,y), self.control()
+
+    def control(self):
+        for n in range(3):
+            if self.get_prize(n):
+                self.add_prize()
+                self.matrix[n][1] = True
+                return True
 
     def add_prize(self):
         self.last_prize += 1
 
     def get_prize(self, n_row):
-        prize = self.raw_bool(n_row)
+        prize = self.row_bool(n_row)
         if prize > self.last_prize:
             return prize
 
+    def state(self):
+        print("Last prize %d" %self.last_prize)
+        for n in range(3): print(self.row_bool(n))
 
     def row_bool(self, n_row):
         row,state = self.matrix[n_row]
+        print(state)
         if state: return False
         bool_sum = 0
         for num,bool in row:
