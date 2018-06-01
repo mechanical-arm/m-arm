@@ -26,15 +26,15 @@ class Table:
         for y,(line,l) in enumerate(self.matrix):
             for x,(cell,b) in enumerate (line):
                 if num == cell:
-                    line[x][1] = True; break
-        return (x,y), self.control()
+                    line[x][1] = True
+                    return (x,y), self.control()
 
     def control(self):
         for n in range(3):
             if self.get_prize(n):
                 self.add_prize()
-                self.matrix[n][1] = True
-                return True
+                self.matrix[n][1] = not self.matrix[n][1]
+                return self.last_prize * self.matrix[n][1]
 
     def add_prize(self):
         self.last_prize += 1
@@ -50,7 +50,6 @@ class Table:
 
     def row_bool(self, n_row):
         row,state = self.matrix[n_row]
-        print(state)
         if state: return False
         bool_sum = 0
         for num,bool in row:

@@ -14,7 +14,7 @@ class Program:
         self.arm = Arm(self, emule)
         self.cli = Cli(self)
 
-        self.table = self.data.get_table(1)
+        self.table = self.data.get_table(33)
         self.emule = emule
 
         # Thread

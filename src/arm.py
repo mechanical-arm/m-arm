@@ -2,10 +2,10 @@ import pygame.time as time
 import sys
 
 class Arm:
-    MIN_HEIGHT = 4
-    MAX_HEIGHT = 15
+    MIN_HEIGHT = 7
+    MAX_HEIGHT = 14
     MID_HEGIHT = 13
-    CATCH_HEIGHT = 10
+    CATCH_HEIGHT = 9
     SPEED = 512
     STOP = 0
 
@@ -17,7 +17,7 @@ class Arm:
         if emule: import ftemule as ftrobopy
         else: import ftrobopy
         self.program = program
-        self.ft = ftrobopy.ftrobopy("192.168.8.2", 65000)
+        self.ft = ftrobopy.ftrobopy("192.168.8.2", 65001)
         # motors
         self.m1 = self.ft.motor(1)
         self.m2 = self.ft.motor(2)
@@ -122,6 +122,8 @@ class Arm:
             self.m2.setSpeed(self.STOP)
             self.goto_y = False
 
+    def play_sound(self, n, s=6):
+        self.ft.play_sound(s, repeat=n)
 
     def update(self):
         self.m4.setSpeed(self.SPEED*int(self.pressed))
@@ -162,6 +164,7 @@ class Arm:
         i1 state: %d
         i2 state: %d
         i3 state: %d
+        i5 state: %d
         ____________
         pressed: %d
         catch: %d
@@ -173,6 +176,6 @@ class Arm:
         last_update: %d
         ____________
         running: %s
-        """ %(self.height, self.i1.state(), self.i2.state(), self.i3.state(),
+        """ %(self.height, self.i1.state(), self.i2.state(), self.i3.state(), self.i5.state(),
         self.pressed, self.catch, self.release, self.goto_back, self.goto_pos,
          self.goto_x, self.goto_y, self.last_update, self.running)

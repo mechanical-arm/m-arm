@@ -76,7 +76,7 @@ class Cli(cmd.Cmd):
                 print(image_final)
                 self.program.table = self.program.data.get_table(int(image_final))
             except Exception as e:
-                print("azione fallita")
+                print(e, "azione fallita")
                 image_final = None
                 ft.stopCameraOnline()
                 sleep(1)
@@ -84,9 +84,13 @@ class Cli(cmd.Cmd):
         arm.goto_back = True
     def help_get_id(self): print("move arm on ID of table and read it")
 
+    def do_play_sound(self, arg):
+        if arg:
+            self.program.arm.play_sound(int(arg), int(arg))
+
     def do_call_num(self, args):
         pos,success = self.program.table.call_num(int(args))
-        if success and not self.program.emule:
+        if pos and not self.program.emule:
             self.do_catch('')
             arm = self.program.arm
             self.do_wait_arm()
@@ -97,6 +101,9 @@ class Cli(cmd.Cmd):
             arm.release = True
             self.do_wait_arm()
             arm.goto_back = True
+        if success:
+            self.program.arm.play_sound(success)
+
     def help_call_num(self): print("")
 
     def do_catch(self, args):
