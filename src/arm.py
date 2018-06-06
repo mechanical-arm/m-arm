@@ -2,10 +2,10 @@ import pygame.time as time
 import sys
 
 class Arm:
-    MIN_HEIGHT = 7
-    MAX_HEIGHT = 14
-    MID_HEGIHT = 13
-    CATCH_HEIGHT = 9
+    MIN_HEIGHT = 5
+    MAX_HEIGHT = 7
+    MID_HEGIHT = 6
+    CATCH_HEIGHT = 3
     SPEED = 512
     STOP = 0
 
@@ -17,7 +17,7 @@ class Arm:
         if emule: import ftemule as ftrobopy
         else: import ftrobopy
         self.program = program
-        self.ft = ftrobopy.ftrobopy("192.168.8.2", 65001)
+        self.ft = ftrobopy.ftrobopy("192.168.8.2", 65000)
         # motors
         self.m1 = self.ft.motor(1)
         self.m2 = self.ft.motor(2)

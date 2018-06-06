@@ -38,6 +38,11 @@ class ftrobopy:
         self.d = dict()
         self._camera = False
 
+    def play_sound(self, sound, repeat):
+        for i in range(repeat):
+            print("play sound %d" %sound)
+
+
     def cameraIsOnline(self):
         return self._camera
 

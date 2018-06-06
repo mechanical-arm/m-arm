@@ -88,6 +88,9 @@ class Cli(cmd.Cmd):
         if arg:
             self.program.arm.play_sound(int(arg), int(arg))
 
+    def do_other_prize(self, args):
+        self.program.table.add_prize(self)
+
     def do_call_num(self, args):
         pos,success = self.program.table.call_num(int(args))
         if pos and not self.program.emule:

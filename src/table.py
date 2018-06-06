@@ -28,13 +28,17 @@ class Table:
                 if num == cell:
                     line[x][1] = True
                     return (x,y), self.control()
+        return None, None
 
     def control(self):
         for n in range(3):
-            if self.get_prize(n):
+            if self.get_prize(n) and not self.matrix[n][1]:
                 self.add_prize()
-                self.matrix[n][1] = not self.matrix[n][1]
-                return self.last_prize * self.matrix[n][1]
+                self.matrix[n][1] = True
+                print(self.matrix[n][1])
+                return self.last_prize
+        if self.tombola():
+            return 10
 
     def add_prize(self):
         self.last_prize += 1
@@ -44,13 +48,20 @@ class Table:
         if prize > self.last_prize:
             return prize
 
+    def tombola(self):
+        for y,(line,l) in enumerate(self.matrix):
+            for x,(cell,b) in enumerate (line):
+                print(b, cell)
+                if cell != 0 and not b:
+                    return False
+        return True
+
     def state(self):
         print("Last prize %d" %self.last_prize)
         for n in range(3): print(self.row_bool(n))
 
     def row_bool(self, n_row):
         row,state = self.matrix[n_row]
-        if state: return False
         bool_sum = 0
         for num,bool in row:
             bool_sum += int(bool)
