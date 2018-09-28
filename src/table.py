@@ -27,6 +27,7 @@ class Table:
             for x,(cell,b) in enumerate (line):
                 if num == cell:
                     line[x][1] = True
+                    self.update()
                     return (x,y), self.control()
         return None, None
 
@@ -66,6 +67,20 @@ class Table:
         for num,bool in row:
             bool_sum += int(bool)
         return bool_sum
+
+    def update(self):
+        import os
+        path = os.path.dirname(__file__)
+        path_file = os.path.join(path,"interface","table")
+        file = open(path_file, "w")
+        for row,_ in self.matrix:
+            for cell,b in row:
+                file.write(str(cell))
+                file.write("-")
+                file.write(str(b))
+                file.write(" ")
+            file.write("\n")
+        file.close()
 
     def __str__(self):
         text = "ID: %s\n\n" % self.id

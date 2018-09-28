@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<table style="border: 1px solid black;">
+    {% for row in table %}
+    <tr>
+      {% for cell,b in row %}
+        <td style= "
+          border: 1px solid black;
+          width: 100px;
+          height: 40px;
+          text-align: center;
+          background-color: #ff0022;
+        " >
+        {% if cell %}
+          {% if b %}
+            <p style="background-color: green;   border-radius: 30px;"> {{ cell }} </p>
+          {% else %}
+            <p color="blue"> {{ cell }} </p>
+          {% endif %}
+        {% endif %}
+        </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+
+
+
+{% endblock %}

@@ -61,7 +61,8 @@ class Cli(cmd.Cmd):
         self.do_wait_arm()
         ft = self.program.arm.ft
         image_final = None
-        while image_final is None:
+        count = 3
+        while (image_final is None) and count:
             try:
                 ft.startCameraOnline()
                 sleep(2.5)
@@ -73,15 +74,16 @@ class Cli(cmd.Cmd):
                 pphoto = Image.open("frame.jpg")
                 image_final = pytesseract.image_to_string(pphoto, config='outputbase digits')
                 ft.stopCameraOnline()
-                print(image_final)
                 self.program.table = self.program.data.get_table(int(image_final))
             except Exception as e:
-                print(e, "azione fallita")
                 image_final = None
                 ft.stopCameraOnline()
                 sleep(1)
+                count -= 1
+        print(self.program.table.id)
         self.do_wait_arm()
         arm.goto_back = True
+
     def help_get_id(self): print("move arm on ID of table and read it")
 
     def do_play_sound(self, arg):

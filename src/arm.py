@@ -9,7 +9,7 @@ class Arm:
     SPEED = 512
     STOP = 0
 
-    FAC_X = 312.5
+    FAC_X = 332.5
     FAC_Y = 307.7
 
 
